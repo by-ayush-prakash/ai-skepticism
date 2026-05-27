@@ -1,0 +1,6 @@
+{
+  "name": "AI Skepticism",
+  "description": "A community for people asking whether AI is actually good for us.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

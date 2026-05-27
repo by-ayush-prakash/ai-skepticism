@@ -1,0 +1,730 @@
+@import "tailwindcss";
+
+@import url('https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700,900&f[]=satoshi-mono@400,500&display=swap');
+
+  :root {
+    /* Reconfigured around strict, high-contrast editorial hierarchy: Paper, Black, Stone, Coral */
+    --paper: #F6F4F1;             /* Paper: Clean, warm, premium main canvas background */
+    --paper-2: #EFECE8;           /* Slightly deeper tint of warm paper if needed */
+    --ink: #000000;               /* Black: Headers, regular body text, navigation links */
+    --ink-2: #000000;             /* Black: Secondary body reading text */
+    --ink-3: #5E5A54;             /* Dark Stone Grey: Muted metadata to establish typography volume hierarchy */
+    --rule: #E4DED2;              /* Stone: Subtle structural line dividers and borders separating sections */
+    --rule-strong: #000000;       /* High-contrast solid black for structural focal points */
+    --accent: #F95C4B;            /* Coral: Strategic accent applied very sparingly (words like Technology, Society) */
+    --accent-dark: #dc3e2c;       /* Deeper coral for hovered links */
+    --dark: #000000;              /* Black: For solid dark segments (marquee / footer and podcast card-less blocks) */
+    --dark-fg: #F6F4F1;           /* Paper: Text flipped inside high-contrast solid dark segments */
+    --dark-rule: #E4DED2;         /* Stone rule inside dark backgrounds */
+
+    /* MAISON NEUE TYPOGRAPHY SYSTEM */
+    --font-maison-display: 'Maison Neue Extended', 'Maison Neue Bold', 'Maison Neue', 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-maison-regular: 'Maison Neue Regular', 'Maison Neue', 'Satoshi', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-maison-mono: 'Maison Neue Mono', 'Satoshi Mono', 'Fira Code', 'JetBrains Mono', monospace;
+    --font-maison-italic: 'Maison Neue Italic', 'Maison Neue', sans-serif;
+
+    --serif: var(--font-maison-regular);
+    --sans: var(--font-maison-regular);
+
+    --maxw: 1180px;
+    --col-label: 200px;     /* narrow left column for labels */
+    --gutter: 64px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 19px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-feature-settings: "kern", "liga", "onum";
+  }
+  /* paper grain — extremely subtle */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='320' height='320'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.1  0 0 0 0 0.08  0 0 0 0 0.06  0 0 0 0 0.45 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: multiply;
+    opacity: 0.18;
+  }
+  nav, section, footer, .wrap { position: relative; z-index: 2; }
+  
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--dark); color: var(--dark-fg); }
+
+  .wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 40px; }
+  @media (max-width: 700px) { .wrap { padding: 0 24px; } }
+
+  /* ============ EDITORIAL GRID ============ */
+  .editorial {
+    display: grid;
+    grid-template-columns: var(--col-label) minmax(0, 1fr);
+    gap: var(--gutter);
+    align-items: start;
+  }
+  .editorial > .label-col {
+    padding-top: 6px;
+  }
+  @media (max-width: 860px) {
+    .editorial {
+      grid-template-columns: 1fr;
+      gap: 18px;
+    }
+    .editorial > .label-col { padding-top: 0; }
+  }
+
+  /* ============ LABELS (no dots, no pills, just spaced small caps) ============ */
+  .label {
+    font-family: var(--serif);
+    font-size: 11.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-2);
+    font-feature-settings: "kern", "liga";
+  }
+  .label.muted { color: var(--ink-3); }
+  .label.accent { color: var(--accent); }
+  .label.on-dark { color: var(--dark-fg); opacity: 0.7; }
+
+  /* ============ TEXT LINKS (the primary CTA pattern) ============ */
+  .tlink {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+    color: var(--ink);
+    font-size: 18px;
+    font-weight: 500;
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 3px;
+    transition: color .15s ease, border-color .15s ease, gap .2s ease;
+    line-height: 1.2;
+  }
+  .tlink:hover { color: var(--accent); border-color: var(--accent); gap: 14px; }
+  .tlink .arr {
+    font-family: var(--serif);
+    font-weight: 400;
+    transition: transform .2s ease;
+    display: inline-block;
+  }
+  .tlink:hover .arr { transform: translateX(2px); }
+
+  .tlink.on-dark { color: var(--dark-fg); border-color: var(--dark-fg); }
+  .tlink.on-dark:hover { color: var(--paper); border-color: var(--paper); }
+
+  /* a more present, still typographic button — minimal border, slight rounding */
+  .btn-edit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: 52px;
+    padding: 0 28px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    border: none;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background .15s ease;
+    line-height: 1;
+  }
+  .btn-edit:hover { background: var(--accent-dark); }
+  .btn-edit:disabled { opacity: 0.5; cursor: default; }
+
+  /* ============ NAV ============ */
+  nav.top {
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper);
+  }
+  nav.top .wordmark { color: var(--ink); }
+  nav.top .nav-links a { color: var(--ink); opacity: 0.85; }
+  nav.top .nav-links a:hover { color: var(--accent); opacity: 1; }
+  nav.top .nav-links a.cta { color: var(--ink); opacity: 1; border-color: var(--ink); }
+  nav.top .nav-links a.cta:hover { color: var(--accent); border-color: var(--accent); }
+  nav.top .wrap {
+    height: 76px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .wordmark {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink);
+  }
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 36px;
+  }
+  .nav-links a {
+    font-family: var(--serif);
+    font-size: 11.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-2);
+    transition: color .15s ease;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.cta {
+    color: var(--ink);
+    border-bottom: 1px solid var(--ink);
+    padding-bottom: 3px;
+  }
+  .nav-links a.cta:hover { color: var(--accent); border-color: var(--accent); }
+  @media (max-width: 720px) {
+    .nav-links { gap: 18px; }
+    .nav-links a:not(.cta):not(.keep-mobile) { display: none; }
+  }
+
+  /* ============ HERO ============ */
+  .hero {
+    padding: 110px 0 100px;
+    background: var(--dark);
+    color: var(--dark-fg);
+  }
+  .hero h1.headline { color: var(--dark-fg); }
+  .hero .hero-sub { color: var(--dark-fg); opacity: 0.72; }
+  /* hero */
+  .hero .kicker { margin-bottom: 56px; } /* legacy — unused */
+  /* ============ TYPOGRAPHIC SCALE ============ */
+  /* One typeface, one rhythm. Sizes from a single ratio so headlines, titles
+     and pull-quotes feel like the same voice at different volumes. */
+
+  h1.headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(36px, 4.6vw, 60px);
+    line-height: 1.08;
+    letter-spacing: -0.018em;
+    max-width: 36ch;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  .hero-sub {
+    margin-top: 36px;
+    max-width: 34em;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    font-weight: 400;
+    text-wrap: pretty;
+  }
+  .hero-cta { margin-top: 48px; }
+
+  /* ============ SECTION CHROME ============ */
+  section.block {
+    padding: 80px 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  section.block.no-border { border-bottom: none; }
+  .section-head { margin-bottom: 52px; }
+  .section-title {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    max-width: 38ch;
+    text-wrap: balance;
+  }
+  .section-deck {
+    margin-top: 20px;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 36em;
+    text-wrap: pretty;
+  }
+
+  /* ============ THE EVENT ============ */
+  .event-headline {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(28px, 3vw, 40px);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    color: var(--ink);
+    max-width: 30ch;
+    text-wrap: balance;
+  }
+  .event-lede {
+    margin-top: 24px;
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    max-width: 34em;
+    text-wrap: pretty;
+  }
+  .event-details {
+    margin-top: 40px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 32px 40px;
+  }
+  .event-details dt {
+    font-family: var(--serif);
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--ink-3);
+    margin-bottom: 10px;
+  }
+  .event-details dd {
+    font-family: var(--serif);
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.3;
+    text-wrap: balance;
+  }
+  @media (max-width: 760px) {
+    .event-details { grid-template-columns: repeat(2, 1fr); gap: 28px 24px; }
+  }
+  @media (max-width: 460px) {
+    .event-details { grid-template-columns: 1fr; gap: 22px; }
+  }
+
+  /* inline form, sits in flow, no card */
+  .event-form-wrap {
+    margin-top: 48px;
+  }
+  .event-form-heading {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.3;
+    max-width: 40ch;
+    letter-spacing: -0.008em;
+    text-wrap: balance;
+  }
+  .event-form-sub {
+    margin-top: 12px;
+    font-size: 17px;
+    color: var(--ink-2);
+    line-height: 1.55;
+    max-width: 36em;
+    text-wrap: pretty;
+  }
+  .event-form {
+    margin-top: 32px;
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    max-width: 640px;
+  }
+  .event-form input[type="email"] {
+    flex: 1;
+    min-width: 0;
+    height: 52px;
+    padding: 0 18px;
+    border: 1px solid var(--rule-strong);
+    background: transparent;
+    color: var(--ink);
+    font-family: var(--serif);
+    font-size: 17px;
+    border-radius: 2px;
+    outline: none;
+    transition: border-color .15s ease, background .15s ease;
+  }
+  .event-form input[type="email"]::placeholder { color: var(--ink-3); font-style: italic; }
+  .event-form input[type="email"]:focus {
+    border-color: var(--ink);
+    background: rgba(255,255,255,0.4);
+  }
+  .event-form-fine {
+    margin-top: 18px;
+    font-size: 14px;
+    color: var(--ink-3);
+    line-height: 1.5;
+    font-style: italic;
+    max-width: 36em;
+  }
+  .event-form-success {
+    margin-top: 24px;
+    font-size: 20px;
+    color: var(--accent);
+    line-height: 1.4;
+    font-weight: 500;
+    max-width: 36em;
+  }
+  @media (max-width: 560px) {
+    .event-form { flex-direction: column; gap: 10px; }
+    .event-form .btn-edit { width: 100%; }
+  }
+
+  /* ============ MISSION — numbered editorial list ============ */
+  .mission-list { list-style: none; margin: 0; }
+  .mission-list > li {
+    display: grid;
+    grid-template-columns: var(--col-label) minmax(0, 1fr);
+    gap: var(--gutter);
+    align-items: start;
+    padding: 40px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .mission-list > li:last-child { border-bottom: none; }
+  .mission-num {
+    font-family: var(--serif);
+    font-size: 44px;
+    font-weight: 300;
+    line-height: 1;
+    letter-spacing: -0.02em;
+    color: var(--ink-3);
+    font-feature-settings: "lnum";
+  }
+  .mission-list h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    line-height: 1.25;
+    font-weight: 500;
+    letter-spacing: -0.008em;
+    text-wrap: balance;
+    color: var(--ink);
+  }
+  .mission-list p {
+    margin-top: 14px;
+    font-size: 18px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 56em;
+    text-wrap: pretty;
+  }
+  .mission-list p em { font-style: italic; }
+  @media (max-width: 860px) {
+    .mission-list > li { grid-template-columns: 1fr; gap: 18px; padding: 32px 0; }
+    .mission-num { font-size: 32px; }
+  }
+
+  /* ============ EVIDENCE — pull-quote entries ============ */
+  .evidence-list {
+    margin: 0;
+    list-style: none;
+  }
+  .evidence-list > li {
+    display: grid;
+    grid-template-columns: var(--col-label) minmax(0, 1fr);
+    gap: var(--gutter);
+    align-items: start;
+    padding: 52px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .evidence-list > li:last-child { border-bottom: none; }
+  .evidence-meta .label { display: block; margin-bottom: 14px; }
+  .evidence-meta .source {
+    font-family: var(--serif);
+    font-size: 15px;
+    line-height: 1.45;
+    color: var(--ink-2);
+    font-style: italic;
+  }
+  .evidence-meta .source a {
+    border-bottom: 1px solid var(--rule-strong);
+    transition: color .15s ease, border-color .15s ease;
+    white-space: nowrap;
+  }
+  .evidence-meta .source a:hover { color: var(--ink); border-color: var(--ink); }
+  .evidence-meta .source cite {
+    font-style: normal;
+    font-weight: 500;
+    display: block;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .evidence-quote {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(22px, 2.2vw, 28px);
+    line-height: 1.25;
+    letter-spacing: -0.008em;
+    color: var(--ink);
+    text-wrap: pretty;
+  }
+  .evidence-quote .accent {
+    color: var(--accent);
+  }
+  .evidence-body {
+    margin-top: 22px;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--ink-2);
+    max-width: 56em;
+    text-wrap: pretty;
+  }
+  @media (max-width: 860px) {
+    .evidence-list > li { grid-template-columns: 1fr; gap: 18px; padding: 40px 0; }
+  }
+
+  /* ============ FAQ — stripped accordion ============ */
+  .faq-list {
+    margin: 0;
+  }
+  details.faq-item {
+    border-top: 1px solid var(--rule);
+    padding: 0;
+  }
+  details.faq-item:last-of-type { border-bottom: none; }
+  details.faq-item summary {
+    list-style: none;
+    cursor: pointer;
+    padding: 22px 40px 22px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 24px;
+    font-family: var(--serif);
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: -0.008em;
+    color: var(--ink);
+    position: relative;
+    transition: color .15s ease;
+  }
+  details.faq-item summary::-webkit-details-marker { display: none; }
+  details.faq-item summary:hover { color: var(--ink); }
+  details.faq-item summary::after {
+    content: "+";
+    font-family: var(--serif);
+    font-size: 26px;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ink-3);
+    flex: none;
+    transition: transform .25s ease, color .15s ease;
+    transform-origin: center;
+  }
+  details.faq-item[open] summary::after {
+    content: "−";
+    color: var(--ink);
+  }
+  details.faq-item .answer {
+    padding: 0 60px 28px 0;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink-2);
+    max-width: 42em;
+    text-wrap: pretty;
+  }
+  details.faq-item .answer p + p { margin-top: 16px; }
+  @media (max-width: 700px) {
+    details.faq-item summary { font-size: 19px; padding-right: 32px; }
+    details.faq-item .answer { padding-right: 0; font-size: 17px; }
+  }
+
+  /* ============ FINAL CTA — sits elegantly on warm Paper background ============ */
+  .final {
+    background: var(--paper);
+    color: var(--ink);
+    padding: 110px 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: none;
+  }
+  .final .label { color: var(--ink); opacity: 0.65; margin-bottom: 36px; }
+  .final h2 {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: clamp(36px, 4.6vw, 60px);
+    line-height: 1.08;
+    letter-spacing: -0.018em;
+    color: var(--ink);
+    max-width: 36ch;
+    text-wrap: balance;
+  }
+  .final p {
+    margin-top: 28px;
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    opacity: 0.9;
+    max-width: 34em;
+    text-wrap: pretty;
+  }
+  .final .cta-row { margin-top: 44px; }
+
+  /* ============ FOOTER ============ */
+  footer {
+    border-top: 1px solid var(--rule);
+    padding: 40px 0 48px;
+  }
+  footer .wrap {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: start;
+    gap: 40px;
+  }
+  .f-left {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .f-wordmark {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.22em;
+    color: var(--ink);
+  }
+  .f-copy {
+    font-family: var(--serif);
+    font-size: 14px;
+    color: var(--ink-2);
+    line-height: 1.5;
+  }
+  .f-cif {
+    margin-top: 4px;
+    font-size: 11.5px;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+  }
+  .f-right {
+    display: flex;
+    gap: 32px;
+    align-items: flex-start;
+  }
+  .f-right a {
+    font-family: var(--serif);
+    font-size: 11.5px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--ink-2);
+    transition: color .15s ease;
+  }
+  .f-right a:hover { color: var(--ink); }
+  @media (max-width: 600px) {
+    footer .wrap { grid-template-columns: 1fr; }
+    .f-right { flex-wrap: wrap; gap: 20px 28px; }
+  }
+
+  /* ============ A11Y ============ */
+  a:focus-visible, button:focus-visible, summary:focus-visible, input:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* ============ MARQUEE ANIMATION ============ */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  /* ============ INTEGRATED MAISON NEUE TYPOGRAPHIC CORE ============ */
+
+  /* Rule 1: Main Headlines -> Maison Neue (Extended or Bold), beautiful display, tight line-height, slightly negative letter-spacing */
+  h1, h2, h3, h4, h5, h6,
+  .headline,
+  .section-title,
+  .event-headline,
+  .event-form-heading,
+  .wordmark,
+  .f-wordmark,
+  .mission-list h3 {
+    font-family: var(--font-maison-display) !important;
+    font-weight: 500 !important;
+    text-transform: none;
+    letter-spacing: -0.025em !important;
+    line-height: 1.12 !important;
+  }
+
+  /* Tighten h1 specifically for grand display look */
+  h1.headline {
+    letter-spacing: -0.035em !important;
+    line-height: 1.08 !important;
+    font-weight: 500 !important;
+  }
+
+  /* Rule 2: Body Text -> Maison Neue Regular, highly legible view with airy, comfortable line-height and generous word/letter spacing */
+  body,
+  p,
+  .hero-sub,
+  .event-lede,
+  .event-form-sub,
+  .mission-list p,
+  .evidence-quote,
+  .answer,
+  .section-deck,
+  input[type="email"] {
+    font-family: var(--font-maison-regular) !important;
+    font-weight: 400 !important;
+    line-height: 1.68 !important;
+    letter-spacing: 0.018em !important;
+    color: var(--ink) !important;
+  }
+
+  /* Make evidence quote stand out beautifully with spacious typography */
+  .evidence-quote {
+    font-size: clamp(23px, 2.3vw, 29px) !important;
+    line-height: 1.35 !important;
+    letter-spacing: -0.01em !important;
+  }
+
+  /* Rule 3: Metadata, Roles & Subheadings -> Maison Neue (Mono or Italic) for small technical text/roles */
+  .label,
+  .f-cif,
+  dt,
+  .evidence-meta,
+  .event-details dt,
+  .nav-links a,
+  footer a,
+  .time-text,
+  .accent-label,
+  .f-wordmark,
+  cite {
+    font-family: var(--font-maison-mono) !important;
+    font-size: 11px !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.16em !important;
+    text-transform: uppercase !important;
+  }
+
+  /* Metadata role-tags / labels using the sharp Mono layout */
+  .accent-label,
+  .evidence-meta .label,
+  .event-details dt,
+  .mission-num {
+    font-family: var(--font-maison-mono) !important;
+    font-weight: 500 !important;
+    letter-spacing: 0.18em !important;
+  }
+
+  /* Soft readable italic layers */
+  em,
+  i,
+  .evidence-meta .source,
+  .event-form-fine,
+  input::placeholder {
+    font-family: var(--font-maison-italic) !important;
+    font-style: italic !important;
+    font-weight: 400 !important;
+    letter-spacing: 0.01em !important;
+  }
+
+
